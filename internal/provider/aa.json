@@ -1,0 +1,50 @@
+{
+  "data": {
+    "resourceId": {
+      "deviceId": "27f16b78-29f7-42a6-5b82-27cc443e642b",
+      "href": "/lineptps/1/carriers/1"
+    },
+    "status": "OK",
+    "content": {
+      "txCLPtarget": -9999,
+      "maxDSCs": 0,
+      "if": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "hFecIterations": "undefined",
+      "spectralBandwidth": 0,
+      "operatingFrequency": 0,
+      "hMaxDSCs": 0,
+      "oMaxDSCs": 0,
+      "hAllowedRxCDSCs": 0,
+      "aid": "XR-L1-C1",
+      "parents": [
+        "XR-L1"
+      ],
+      "aConstellationFrequency": 0,
+      "oModulation": "16QAM",
+      "maxTxDSCs": 0,
+      "hMaxTxDSCs": 0,
+      "constellationFrequency": 0,
+      "clientPortMode": "ethernet",
+      "advLineCtrl": "host",
+      "allowedTxCDSCs": 0,
+      "hAllowedTxCDSCs": 0,
+      "aAllowedTxCDSCs": 65535,
+      "aAllowedRxCDSCs": 65535,
+      "rt": [
+        "xr.carrier"
+      ],
+      "fecIterations": "undefined",
+      "hTxCLPtarget": -9999,
+      "oFecIterations": "standard",
+      "allowedRxCDSCs": 0,
+      "capabilities": {},
+      "hFrequency": 191100000,
+      "hModulation": "undefined",
+      "oMaxTxDSCs": 16,
+      "modulation": "QPSK",
+      "baudRate": 32,
+      "aTxCLPtarget": 0
+    }

@@ -1,0 +1,242 @@
+set /cfg configuredRole auto
+set /cfg currentRole unknown
+set /cfg roleStatus scanning
+set /cfg trafficMode L1Mode
+set /cfg serdesRate 25
+set /cfg fiberConnectionMode dual
+set /cfg aid XR-CFG
+setArray /cfg parents XR
+
+$port=create /lineptps/
+set $port aid XR-L1
+setArray $port parents XR
+set $port administrativeState unlock
+set $port operStatus enabled
+
+$portcarrier=create $port/carriers/
+set $portcarrier aid XR-L1-C1
+set $portcarrier parents XR-L1
+set $portcarrier frequencyCtrl xr
+set $portcarrier constellationFrequency 0
+set $portcarrier frequency 0
+set $portcarrier modulation 16QAM
+set $portcarrier capacity 400
+set $portcarrier clientPortMode ethernet
+set $portcarrier baudRate baudRate
+set $portcarrier txPowerTargetPerDsc -6.4
+
+$portneig=create $port/neighbors
+set $portneig aid XR-L1-PN1
+setArray $portneig parents XR-L1
+
+$dsc1=create $portcarrier/dscs/
+set $dsc1 aid XR-L1-C1-DSC1
+setArray $dsc1 parents XR-L1-C1
+set $dsc1 usability usable
+set $dsc1 txEnabled true
+set $dsc1 rxEnabled true
+set $dsc1 facPRBSGenEnabled false
+set $dsc1 facPRBSMonEnabled false
+set $dsc1 txStatus disabled
+set $dsc1 rxStatus disabled
+
+$dsc2=create $portcarrier/dscs/
+set $dsc2 aid XR-L1-C1-DSC2
+setArray $dsc2 parents XR-L1-C1
+set $dsc2 usability usable
+set $dsc2 txEnabled true
+set $dsc2 rxEnabled true
+set $dsc2 facPRBSGenEnabled false
+set $dsc2 facPRBSMonEnabled false
+set $dsc2 txStatus disabled
+set $dsc2 rxStatus disabled
+
+$dsc3=create $portcarrier/dscs/
+set $dsc3 aid XR-L1-C1-DSC3
+setArray $dsc3 parents XR-L1-C1
+set $dsc3 usability usable
+set $dsc3 txEnabled true
+set $dsc3 rxEnabled true
+set $dsc3 facPRBSGenEnabled false
+set $dsc3 facPRBSMonEnabled false
+set $dsc3 txStatus disabled
+set $dsc3 rxStatus disabled
+
+$dsc4=create $portcarrier/dscs/
+set $dsc4 aid XR-L1-C1-DSC4
+setArray $dsc4 parents XR-L1-C1
+set $dsc4 usability usable
+set $dsc4 txEnabled true
+set $dsc4 rxEnabled true
+set $dsc4 facPRBSGenEnabled false
+set $dsc4 facPRBSMonEnabled false
+set $dsc4 txStatus disabled
+set $dsc4 rxStatus disabled
+
+$dsc5=create $portcarrier/dscs/
+set $dsc5 aid XR-L1-C1-DSC5
+setArray $dsc5 parents XR-L1-C1
+set $dsc5 usability usable
+set $dsc5 txEnabled true
+set $dsc5 rxEnabled true
+set $dsc5 facPRBSGenEnabled false
+set $dsc5 facPRBSMonEnabled false
+set $dsc5 txStatus disabled
+set $dsc5 rxStatus disabled
+
+$dsc6=create $portcarrier/dscs/
+set $dsc6 aid XR-L1-C1-DSC6
+setArray $dsc6 parents XR-L1-C1
+set $dsc6 usability usable
+set $dsc6 txEnabled true
+set $dsc6 rxEnabled true
+set $dsc6 facPRBSGenEnabled false
+set $dsc6 facPRBSMonEnabled false
+set $dsc6 txStatus disabled
+set $dsc6 rxStatus disabled
+
+$dsc7=create $portcarrier/dscs/
+set $dsc7 aid XR-L1-C1-DSC7
+setArray $dsc7 parents XR-L1-C1
+set $dsc7 usability usable
+set $dsc7 txEnabled true
+set $dsc7 rxEnabled true
+set $dsc7 facPRBSGenEnabled false
+set $dsc7 facPRBSMonEnabled false
+set $dsc7 txStatus disabled
+set $dsc7 rxStatus disabled
+
+$dsc8=create $portcarrier/dscs/
+set $dsc8 aid XR-L1-C1-DSC8
+setArray $dsc8 parents XR-L1-C1
+set $dsc8 usability usable
+set $dsc8 txEnabled true
+set $dsc8 rxEnabled true
+set $dsc8 facPRBSGenEnabled false
+set $dsc8 facPRBSMonEnabled false
+set $dsc8 txStatus disabled
+set $dsc8 rxStatus disabled
+
+$dsc9=create $portcarrier/dscs/
+set $dsc9 aid XR-L1-C1-DSC9
+setArray $dsc9 parents XR-L1-C1
+set $dsc9 usability usable
+set $dsc9 txEnabled true
+set $dsc9 rxEnabled true
+set $dsc9 facPRBSGenEnabled false
+set $dsc9 facPRBSMonEnabled false
+set $dsc9 txStatus disabled
+set $dsc9 rxStatus disabled
+
+$dsc10=create $portcarrier/dscs/
+set $dsc10 aid XR-L1-C1-DSC10
+setArray $dsc10 parents XR-L1-C1
+set $dsc10 usability usable
+set $dsc10 txEnabled true
+set $dsc10 rxEnabled true
+set $dsc10 facPRBSGenEnabled false
+set $dsc10 facPRBSMonEnabled false
+set $dsc10 txStatus disabled
+set $dsc10 rxStatus disabled
+
+$dsc11=create $portcarrier/dscs/
+set $dsc11 aid XR-L1-C1-DSC11
+setArray $dsc11 parents XR-L1-C1
+set $dsc11 usability usable
+set $dsc11 txEnabled true
+set $dsc11 rxEnabled true
+set $dsc11 facPRBSGenEnabled false
+set $dsc11 facPRBSMonEnabled false
+set $dsc11 txStatus disabled
+set $dsc11 rxStatus disabled
+
+$dsc12=create $portcarrier/dscs/
+set $dsc12 aid XR-L1-C1-DSC12
+setArray $dsc12 parents XR-L1-C1
+set $dsc12 usability usable
+set $dsc12 txEnabled true
+set $dsc12 rxEnabled true
+set $dsc12 facPRBSGenEnabled false
+set $dsc12 facPRBSMonEnabled false
+set $dsc12 txStatus disabled
+set $dsc12 rxStatus disabled
+
+$dsc13=create $portcarrier/dscs/
+set $dsc13 aid XR-L1-C1-DSC13
+setArray $dsc13 parents XR-L1-C1
+set $dsc13 usability usable
+set $dsc13 txEnabled true
+set $dsc13 rxEnabled true
+set $dsc13 facPRBSGenEnabled false
+set $dsc13 facPRBSMonEnabled false
+set $dsc13 txStatus disabled
+set $dsc13 rxStatus disabled
+
+$dsc14=create $portcarrier/dscs/
+set $dsc14 aid XR-L1-C1-DSC14
+setArray $dsc14 parents XR-L1-C1
+set $dsc14 usability usable
+set $dsc14 txEnabled true
+set $dsc14 rxEnabled true
+set $dsc14 facPRBSGenEnabled false
+set $dsc14 facPRBSMonEnabled false
+set $dsc14 txStatus disabled
+set $dsc14 rxStatus disabled
+
+$dsc15=create $portcarrier/dscs/
+set $dsc15 aid XR-L1-C1-DSC15
+setArray $dsc15 parents XR-L1-C1
+set $dsc15 usability usable
+set $dsc15 txEnabled true
+set $dsc15 rxEnabled true
+set $dsc15 facPRBSGenEnabled false
+set $dsc15 facPRBSMonEnabled false
+set $dsc15 txStatus disabled
+set $dsc15 rxStatus disabled
+
+$dsc16=create $portcarrier/dscs/
+set $dsc16 aid XR-L1-C1-DSC16
+setArray $dsc16 parents XR-L1-C1
+set $dsc16 usability usable
+set $dsc16 txEnabled true
+set $dsc16 rxEnabled true
+set $dsc16 facPRBSGenEnabled false
+set $dsc16 facPRBSMonEnabled false
+set $dsc16 txStatus disabled
+set $dsc16 rxStatus disabled
+
+$eth1=create /ethernets/
+set $eth1 aid XR-T1
+setArray $eth1 parents XR
+set $eth1 portSpeed 100
+set $eth1 fecMode disabled
+set $eth1 fecType KP4
+set $eth1 loopbackMode disabled
+set $eth1 loopbackType loopbackAndContinue
+
+$eth2=create /ethernets/
+set $eth2 aid XR-T2
+setArray $eth2 parents XR
+set $eth2 portSpeed 100
+set $eth2 fecMode disabled
+set $eth2 fecType KP4
+set $eth2 loopbackMode disabled
+set $eth2 loopbackType loopbackAndContinue
+
+$eth3=create /ethernets/
+set $eth3 aid XR-T3
+setArray $eth3 parents XR
+set $eth3 portSpeed 100
+set $eth3 fecMode disabled
+set $eth3 fecType KP4
+set $eth3 loopbackMode disabled
+set $eth3 loopbackType loopbackAndContinue
+
+$eth4=create /ethernets/
+set $eth4 aid XR-T4
+setArray $eth4 parents XR
+set $eth4 portSpeed 100
+set $eth4 fecMode disabled
+set $eth4 fecType KP4
+set $eth4 loopbackMode disabled
+set $eth4 loopbackType loopbackAndContinue

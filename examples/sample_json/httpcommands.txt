@@ -1,0 +1,25 @@
+// get ACCESS_TOKEN
+1. Access Token
+export ACCESS_TOKEN=$(curl -ks 'https://sv-kube-prd.infinera.com:443/oauth/token?client_id=test&audience=test' | jq -r .access_token)
+
+// get devices
+curl -ks -XGET 'https://sv-kube-prd.infinera.com:443/api/v1/devices' --header 'Content-Type: application/json' --header "Authorization: Bearer $ACCESS_TOKEN" | jq '.[].id, .[].name'
+export DEVICE_ID=123e4567-e89b-12d3-a456-426614174000
+
+// get device
+curl -ks -XGET https://sv-kube-prd.infinera.com:443/api/v1/devices/$DEVICE_ID/ --header 'Content-Type: application/json' --header "Authorization: Bearer $ACCESS_TOKEN" | jq
+
+// get Resource links
+curl -ks -XGET https://sv-kube-prd.infinera.com:443/api/v1/devices/$DEVICE_ID/resource-links --header 'Content-Type: application/json' --header "Authorization: Bearer $ACCESS_TOKEN" | jq
+
+// put device -  not supported - need to figure out how to setup device name
+curl -ks -XPUT https://sv-kube-prd.infinera.com:443/api/v1/devices/$DEVICE_ID --header 'Content-Type: application/json' --header "Authorization: Bearer $ACCESS_TOKEN" -d @device-put.json 
+
+// get device config
+curl -ks -XGET https://sv-kube-prd.infinera.com:443/api/v1/devices/$DEVICE_ID/resources/cfg --header 'Content-Type: application/json' --header "Authorization: Bearer $ACCESS_TOKEN"
+
+// put device config
+curl -ks -XPUT https://sv-kube-prd.infinera.com:443/api/v1/devices/$DEVICE_ID/resources/cfg --header 'Content-Type: application/json' --header "Authorization: Bearer $ACCESS_TOKEN" -d @cfg-put.json 
+
+// get Carrier 
+curl -ks -XGET https://sv-kube-prd.infinera.com:443/api/v1/devices/$DEVICE_ID/resources/carriers/1 --header 'Content-Type: application/json' --header "Authorization: Bearer $ACCESS_TOKEN" 

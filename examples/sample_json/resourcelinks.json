@@ -1,0 +1,598 @@
+{
+  "auditContext": {
+    "userId": "1",
+    "correlationId": ""
+  },
+  "eventMetadata": {
+    "version": "0",
+    "timestamp": "1643406252367882958",
+    "connectionId": "10.100.204.51:49234",
+    "sequence": "4"
+  },
+  "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+  "resources": [
+    {
+      "supportedContentTypes": [],
+      "validUntil": "0",
+      "endpointInformations": [],
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "anchor": "",
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/7",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "policy": {
+        "bitFlags": 3
+      }
+    },
+    {
+      "href": "/ethernets/7/local-connections",
+      "supportedContentTypes": [],
+      "policy": {
+        "bitFlags": 3
+      },
+      "endpointInformations": [],
+      "resourceTypes": [
+        "oic.wk.col",
+        "xr.local.connections"
+      ],
+      "anchor": "",
+      "validUntil": "0",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.ll",
+        "oic.if.b",
+        "oic.if.baseline"
+      ],
+      "title": ""
+    },
+    {
+      "endpointInformations": [],
+      "anchor": "",
+      "supportedContentTypes": [],
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "policy": {
+        "bitFlags": 3
+      },
+      "href": "/cfg",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "resourceTypes": [
+        "oic.wk.con",
+        "xr.configuration"
+      ],
+      "validUntil": "0"
+    },
+    {
+      "endpointInformations": [],
+      "resourceTypes": [
+        "oic.wk.p",
+        "xr.platform"
+      ],
+      "anchor": "",
+      "supportedContentTypes": [],
+      "href": "/oic/p",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "validUntil": "0",
+      "policy": {
+        "bitFlags": 3
+      },
+      "interfaces": [
+        "oic.if.r",
+        "oic.if.baseline"
+      ],
+      "title": ""
+    },
+    {
+      "supportedContentTypes": [],
+      "endpointInformations": [],
+      "validUntil": "0",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "anchor": "",
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/8",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "policy": {
+        "bitFlags": 3
+      },
+      "title": "",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ]
+    },
+    {
+      "validUntil": "0",
+      "endpointInformations": [],
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/3",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "supportedContentTypes": [],
+      "policy": {
+        "bitFlags": 3
+      },
+      "anchor": ""
+    },
+    {
+      "title": "",
+      "endpointInformations": [],
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/10",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "anchor": "",
+      "supportedContentTypes": [],
+      "validUntil": "0",
+      "policy": {
+        "bitFlags": 3
+      }
+    },
+    {
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "anchor": "",
+      "policy": {
+        "bitFlags": 3
+      },
+      "endpointInformations": [],
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "supportedContentTypes": [],
+      "title": "",
+      "validUntil": "0",
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/5"
+    },
+    {
+      "supportedContentTypes": [],
+      "endpointInformations": [],
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "title": "",
+      "validUntil": "0",
+      "policy": {
+        "bitFlags": 3
+      },
+      "href": "/ethernets/3/local-connections",
+      "resourceTypes": [
+        "oic.wk.col",
+        "xr.local.connections"
+      ],
+      "interfaces": [
+        "oic.if.ll",
+        "oic.if.b",
+        "oic.if.baseline"
+      ],
+      "anchor": ""
+    },
+    {
+      "title": "",
+      "validUntil": "0",
+      "endpointInformations": [],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "supportedContentTypes": [],
+      "policy": {
+        "bitFlags": 3
+      },
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/2",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "anchor": "",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d"
+    },
+    {
+      "supportedContentTypes": [],
+      "endpointInformations": [],
+      "href": "/ethernets/7",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "title": "",
+      "policy": {
+        "bitFlags": 3
+      },
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "anchor": "",
+      "validUntil": "0",
+      "resourceTypes": [
+        "xr.ethernet"
+      ]
+    },
+    {
+      "supportedContentTypes": [],
+      "policy": {
+        "bitFlags": 3
+      },
+      "title": "",
+      "anchor": "",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "validUntil": "0",
+      "endpointInformations": [],
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/1"
+    },
+    {
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "anchor": "",
+      "policy": {
+        "bitFlags": 3
+      },
+      "href": "/ethernets/5",
+      "validUntil": "0",
+      "resourceTypes": [
+        "xr.ethernet"
+      ],
+      "endpointInformations": [],
+      "supportedContentTypes": []
+    },
+    {
+      "supportedContentTypes": [],
+      "validUntil": "0",
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/9",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "title": "",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "policy": {
+        "bitFlags": 3
+      },
+      "endpointInformations": [],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "anchor": ""
+    },
+    {
+      "supportedContentTypes": [],
+      "validUntil": "0",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "title": "",
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/15",
+      "endpointInformations": [],
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "anchor": "",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "policy": {
+        "bitFlags": 3
+      }
+    },
+    {
+      "href": "/ethernets/1/local-connections",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "resourceTypes": [
+        "oic.wk.col",
+        "xr.local.connections"
+      ],
+      "supportedContentTypes": [],
+      "title": "",
+      "validUntil": "0",
+      "interfaces": [
+        "oic.if.ll",
+        "oic.if.b",
+        "oic.if.baseline"
+      ],
+      "anchor": "",
+      "policy": {
+        "bitFlags": 3
+      },
+      "endpointInformations": []
+    },
+    {
+      "title": "",
+      "endpointInformations": [],
+      "href": "/lineptps/1",
+      "validUntil": "0",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "supportedContentTypes": [],
+      "policy": {
+        "bitFlags": 3
+      },
+      "resourceTypes": [
+        "xr.port"
+      ],
+      "anchor": "",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d"
+    },
+    {
+      "validUntil": "0",
+      "endpointInformations": [],
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "anchor": "",
+      "policy": {
+        "bitFlags": 3
+      },
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "supportedContentTypes": [],
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/4"
+    },
+    {
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "anchor": "",
+      "validUntil": "0",
+      "policy": {
+        "bitFlags": 3
+      },
+      "endpointInformations": [],
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/13",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "supportedContentTypes": []
+    },
+    {
+      "policy": {
+        "bitFlags": 3
+      },
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/14",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "supportedContentTypes": [],
+      "validUntil": "0",
+      "endpointInformations": [],
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "anchor": ""
+    },
+    {
+      "policy": {
+        "bitFlags": 3
+      },
+      "href": "/ethernets/1",
+      "resourceTypes": [
+        "xr.ethernet"
+      ],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "anchor": "",
+      "validUntil": "0",
+      "endpointInformations": [],
+      "supportedContentTypes": [],
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d"
+    },
+    {
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.ll",
+        "oic.if.b",
+        "oic.if.baseline"
+      ],
+      "anchor": "",
+      "title": "",
+      "validUntil": "0",
+      "endpointInformations": [],
+      "supportedContentTypes": [],
+      "policy": {
+        "bitFlags": 3
+      },
+      "href": "/ethernets/5/local-connections",
+      "resourceTypes": [
+        "oic.wk.col",
+        "xr.local.connections"
+      ]
+    },
+    {
+      "anchor": "",
+      "validUntil": "0",
+      "endpointInformations": [],
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "resourceTypes": [
+        "xr.carrier"
+      ],
+      "policy": {
+        "bitFlags": 3
+      },
+      "href": "/lineptps/1/carriers/1",
+      "title": "",
+      "supportedContentTypes": []
+    },
+    {
+      "policy": {
+        "bitFlags": 3
+      },
+      "supportedContentTypes": [],
+      "title": "",
+      "validUntil": "0",
+      "anchor": "",
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/16",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "endpointInformations": [],
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ]
+    },
+    {
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "title": "",
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/6",
+      "supportedContentTypes": [],
+      "policy": {
+        "bitFlags": 3
+      },
+      "anchor": "",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "validUntil": "0",
+      "endpointInformations": []
+    },
+    {
+      "title": "",
+      "policy": {
+        "bitFlags": 3
+      },
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/12",
+      "validUntil": "0",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "anchor": "",
+      "supportedContentTypes": [],
+      "endpointInformations": []
+    },
+    {
+      "href": "/lineptps/1/carriers/1/digital-subcarriers/11",
+      "anchor": "",
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "policy": {
+        "bitFlags": 3
+      },
+      "endpointInformations": [],
+      "title": "",
+      "resourceTypes": [
+        "xr.carrier.dsc"
+      ],
+      "supportedContentTypes": [],
+      "validUntil": "0"
+    },
+    {
+      "interfaces": [
+        "oic.if.r",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "resourceTypes": [
+        "oic.wk.d"
+      ],
+      "supportedContentTypes": [],
+      "endpointInformations": [],
+      "href": "/oic/d",
+      "anchor": "",
+      "policy": {
+        "bitFlags": 3
+      },
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "validUntil": "0"
+    },
+    {
+      "title": "",
+      "policy": {
+        "bitFlags": 3
+      },
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "href": "/ethernets/3",
+      "endpointInformations": [],
+      "interfaces": [
+        "oic.if.rw",
+        "oic.if.baseline"
+      ],
+      "anchor": "",
+      "supportedContentTypes": [],
+      "validUntil": "0",
+      "resourceTypes": [
+        "xr.ethernet"
+      ]
+    },
+    {
+      "supportedContentTypes": [],
+      "validUntil": "0",
+      "policy": {
+        "bitFlags": 3
+      },
+      "deviceId": "209e4c37-0560-4429-63c2-b846a5b0dd4d",
+      "interfaces": [
+        "oic.if.ll",
+        "oic.if.create",
+        "oic.if.b",
+        "oic.if.baseline"
+      ],
+      "title": "",
+      "endpointInformations": [],
+      "href": "/network-connections",
+      "anchor": "",
+      "resourceTypes": [
+        "oic.wk.col",
+        "xr.network.connections"
+      ]
+    }
+  ]
+}

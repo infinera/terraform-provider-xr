@@ -1,0 +1,6 @@
+{
+    "fiberConnectionMode": "dual",
+    "configuredRole": "auto",
+    "trafficMode": "L1Mode",
+    "tcMode": false
+}

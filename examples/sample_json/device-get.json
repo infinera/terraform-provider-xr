@@ -1,0 +1,27 @@
+{
+    "metadata": {
+      "status": {
+        "value": "ONLINE",
+        "validUntil": "0"
+      },
+      "shadowSynchronization": "UNSET"
+    },
+    "manufacturerName": [
+      {
+        "language": "en",
+        "value": "Infinera"
+      }
+    ],
+    "modelNumber": "34X",
+    "interfaces": [
+      "oic.if.r",
+      "oic.if.baseline"
+    ],
+    "protocolIndependentId": "123e4567-e89b-12d3-a456-426614174000",
+    "id": "ae21918b-118b-463e-51f0-143524bd8199",
+    "types": [
+      "x.com.infinera.xr",
+      "oic.wk.d"
+    ],
+    "name": "Unsecure"
+  }

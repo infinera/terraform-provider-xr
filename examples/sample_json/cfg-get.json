@@ -1,0 +1,40 @@
+{
+    "types": [
+        "xr.configuration"
+    ],
+    "data": {
+        "status": "OK",
+        "auditContext": {
+            "userId": "1",
+            "correlationId": ""
+        },
+        "eventMetadata": {
+            "connectionId": "10.100.204.51:41426",
+            "sequence": "10",
+            "version": "0",
+            "timestamp": "1643337865761978920"
+        },
+        "resourceId": {
+            "deviceId": "ae21918b-118b-463e-51f0-143524bd8199",
+            "href": "/cfg"
+        },
+        "content": {
+            "roleStatus": "scanning",
+            "serdesRate": 25,
+            "rt": [
+                "xr.configuration"
+            ],
+            "fiberConnectionMode": "dual",
+            "configuredRole": "auto",
+            "currentRole": "hub",
+            "trafficMode": "L1Mode",
+            "tcMode": true,
+            "if": [
+                "oic.if.rw",
+                "oic.if.baseline"
+            ],
+            "aid": ""
+        }
+    }
+}
+

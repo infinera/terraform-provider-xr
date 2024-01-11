@@ -1,0 +1,240 @@
+package provider
+
+import (
+	"context"
+	"encoding/json"
+	"strings"
+
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"terraform-provider-xrcm/internal/xrcm_pf"
+)
+
+// Ensure the implementation satisfies the expected interfaces.
+var (
+	_ datasource.DataSource              = &DetailDevicesDataSource{}
+	_ datasource.DataSourceWithConfigure = &DetailDevicesDataSource{}
+)
+
+// NewCoffeesDataSource is a helper function to simplify the provider implementation.
+func NewDetailDevicesDataSource() datasource.DataSource {
+	return &DetailDevicesDataSource{}
+}
+
+// coffeesDataSource is the data source implementation.
+type DetailDevicesDataSource struct {
+	client *xrcm_pf.Client
+}
+
+type DetailDeviceData struct {
+	DeviceId            types.String `tfsdk:"deviceid"`
+	N                   types.String `tfsdk:"name"`
+	ManufacturerName    types.String `tfsdk:"manufacturername"`
+	SoftwareVersion     types.String `tfsdk:"sv"`
+	PIID                types.String `tfsdk:"piid"`
+	Type                types.String `tfsdk:"type"`
+	Status              types.String `tfsdk:"status"`
+	ConfiguredRole      types.String `tfsdk:"configuredrole"`
+	CurrentRole         types.String `tfsdk:"currentrole"`
+	SerdesRate          types.String `tfsdk:"serdesrate"`
+	TrafficMode         types.String `tfsdk:"trafficmode"`
+	FiberConnectionMode types.String `tfsdk:"fiberconnectionmode"`
+	TcMode              types.Bool   `tfsdk:"tcmode"`
+	RoleStatus          types.String `tfsdk:"rolestatus"`
+	RestartAction       types.Int64  `tfsdk:"restartaction"`
+}
+
+type DetailDevicesDataSourceData struct {
+	State   types.String       `tfsdk:"state"`
+	Names   []types.String     `tfsdk:"names"`
+	Devices []DetailDeviceData `tfsdk:"devices"`
+}
+
+// Metadata returns the data source type name.
+func (d *DetailDevicesDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_detail_devices"
+}
+
+func (d *DetailDevicesDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+	resp.Schema = schema.Schema{
+		Description: "Fetches the list of Device infos",
+		Attributes: map[string]schema.Attribute{
+			"state": schema.StringAttribute{
+				Description: "Device state",
+				Optional:    true,
+			},
+			"names": schema.ListAttribute{
+				Description: "List of device names",
+				Required:    true,
+				ElementType: types.StringType,
+			},
+			"devices": schema.ListNestedAttribute{
+				Description: "List of devices'infos",
+				Computed:    true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"n": schema.StringAttribute{
+							Description: "Device Name",
+							Computed:    true,
+						},
+						"deviceid": schema.StringAttribute{
+							Description: " ID",
+							Computed:    true,
+						},
+						"manufacturername": schema.StringAttribute{
+							Description: "manufacturer name",
+							Computed:    true,
+						},
+						"sv": schema.StringAttribute{
+							Description: "Device software version",
+							Computed:    true,
+						},
+						"piid": schema.StringAttribute{
+							Description: "piid",
+							Computed:    true,
+						},
+						"type": schema.StringAttribute{
+							Description: "Device type",
+							Computed:    true,
+						},
+						"status": schema.StringAttribute{
+							Description: "Device status",
+							Computed:    true,
+						},
+						"configuredrole": schema.StringAttribute{
+							Description: "Device configured role",
+							Computed:    true,
+						},
+						"currentrole": schema.StringAttribute{
+							Description: "Device current role",
+							Computed:    true,
+						},
+						"trafficmode": schema.StringAttribute{
+							Description: "Device traffic mode",
+							Computed:    true,
+						},
+						"serdesrate": schema.StringAttribute{
+							Description: "serdes rate",
+							Computed:    true,
+						},
+						"fiberconnectionmode": schema.StringAttribute{
+							Description: "Device fiber connection mode",
+							Computed:    true,
+						},
+						"tcmode": schema.BoolAttribute{
+							Description: "Device tc mode",
+							Computed:    true,
+						},
+						"rolestatus": schema.StringAttribute{
+							Description: "role status",
+							Computed:    true,
+						},
+						"restartaction": schema.Int64Attribute{
+							Description: "restart action",
+							Computed:    true,
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
+// Configure adds the provider configured client to the data source.
+func (d *DetailDevicesDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+	if req.ProviderData == nil {
+		return
+	}
+
+	d.client = req.ProviderData.(*xrcm_pf.Client)
+}
+
+func (d *DetailDevicesDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+
+	data := DetailDevicesDataSourceData{}
+	diags := req.Config.Get(ctx, &data)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if len(data.Names) == 0 {
+		diags.AddError(
+			"DetailDevicesDataSource: Names is empty",
+			"Read: Names must be specified ",
+		)
+		return
+	}
+
+	var devices []DetailDeviceData
+	for _, name := range data.Names {
+		deviceId, found := d.client.GetDeviceIdFromName(name.ValueString())
+		if !found {
+			continue
+		}
+		queryStr := "/" + deviceId
+
+		tflog.Debug(ctx, "DetailDevicesDataSource Read: get devices", map[string]interface{}{"request": req})
+		// Get device data
+		body, err := d.client.ExecuteHttpCommand("GET", "devices"+queryStr, nil)
+		if err != nil {
+			if !strings.Contains(err.Error(), "status: 404") {
+				diags.AddError(
+					"DetailDevicesDataSource: read ##: Error Get Device: "+name.ValueString(),
+					"Read: Could not Get , unexpected error: "+err.Error(),
+				)
+				return
+			}
+			tflog.Debug(ctx, "DetailDevicesDataSource: read - not found device "+name.ValueString())
+			continue
+		}
+
+		tflog.Debug(ctx, "DetailDevicesDataSource Read: get device", map[string]interface{}{"queryStr": queryStr, "body": string(body)})
+		var result = make(map[string]interface{})
+		json.Unmarshal([]byte(body), &result)
+		deviceData := DetailDeviceData{}
+		connection := (result["metadata"].(map[string]interface{}))["connection"]
+		status := connection.(map[string]interface{})["status"].(string)
+		if data.State.ValueString() != "" && data.State.ValueString() != status {
+			continue
+		}
+		deviceData.Status = types.StringValue(status)
+		deviceData.DeviceId = types.StringValue(result["id"].(string))
+		manu := (result["manufacturerName"].([]interface{}))[0]
+		manuValue := manu.(map[string]interface{})["value"].(string)
+		deviceData.ManufacturerName = types.StringValue(manuValue)
+		deviceData.N = types.StringValue(result["name"].(string))
+		xrTypes := result["types"].([]interface{})
+		deviceData.Type = types.StringValue(xrTypes[0].(string))
+		content := (result["data"].(map[string]interface{}))["content"].(map[string]interface{})
+		deviceData.SoftwareVersion = types.StringValue(content["sv"].(string))
+		deviceData.PIID = types.StringValue(content["piid"].(string))
+
+		//get device config
+		data2, err := GetResourcebyID(ctx, d.client, deviceId, "resources/cfg")
+		if err != nil {
+			continue
+		}
+		resultData2 := data2["data"].(map[string]interface{})
+		cfgRec := resultData2["content"].(map[string]interface{})
+		deviceData.ConfiguredRole = types.StringValue(cfgRec["configuredRole"].(string))
+		deviceData.CurrentRole = types.StringValue(cfgRec["currentRole"].(string))
+		deviceData.SerdesRate = types.StringValue(cfgRec["serdesRate"].(string))
+		deviceData.TrafficMode = types.StringValue(cfgRec["trafficMode"].(string))
+		deviceData.TcMode = types.BoolValue(cfgRec["tcMode"].(bool))
+		deviceData.FiberConnectionMode = types.StringValue(cfgRec["fiberConnectionMode"].(string))
+		deviceData.RoleStatus = types.StringValue(cfgRec["roleStatus"].(string))
+		deviceData.RestartAction = types.Int64Value(int64(cfgRec["restartAction"].(float64)))
+		
+		devices = append(devices, deviceData)i
+	}
+	tflog.Debug(ctx, "DetailDevicesDataSource Read: devices", map[string]interface{}{"# Device": len(devices), "devices": devices})
+	data.Devices = make([]DetailDeviceData, len(devices))
+	data.Devices = devices
+	tflog.Debug(ctx, "DetailDevicesDataSource Read: data", map[string]interface{}{"data": data})
+	diags = resp.State.Set(ctx, &data)
+	resp.Diagnostics.Append(diags...)
+
+}

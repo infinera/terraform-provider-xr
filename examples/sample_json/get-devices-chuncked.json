@@ -1,0 +1,119 @@
+{
+    "result": {
+        "interfaces": [
+            "oic.if.r",
+            "oic.if.baseline"
+        ],
+        "protocolIndependentId": "123e4567-e89b-12d3-a456-426614174000",
+        "id": "ae21918b-118b-463e-51f0-143524bd8199",
+        "types": [
+            "x.com.infinera.xr",
+            "oic.wk.d"
+        ],
+        "name": "Unsecure",
+        "metadata": {
+            "status": {
+                "value": "ONLINE",
+                "validUntil": "0"
+            },
+            "shadowSynchronization": "UNSET"
+        },
+        "manufacturerName": [
+            {
+                "language": "en",
+                "value": "Infinera"
+            }
+        ],
+        "modelNumber": "34X"
+    }
+}
+
+    {
+    "result": {
+        "manufacturerName": [
+            {
+                "language": "en",
+                "value": "Infinera"
+            }
+        ],
+        "modelNumber": "34X",
+        "interfaces": [
+            "oic.if.r",
+            "oic.if.baseline"
+        ],
+        "protocolIndependentId": "123e4567-e89b-12d3-a456-426614174000",
+        "id": "cacc0302-163b-43ef-790e-f4c4ac2ed2fb",
+        "types": [
+            "x.com.infinera.xr",
+            "oic.wk.d"
+        ],
+        "name": "Unsecure",
+        "metadata": {
+            "shadowSynchronization": "UNSET",
+            "status": {
+                "value": "ONLINE",
+                "validUntil": "0"
+            }
+        }
+    }
+}
+    
+    {
+    "result": {
+        "types": [
+            "x.com.infinera.xr",
+            "oic.wk.d"
+        ],
+        "name": "Unsecure",
+        "metadata": {
+            "status": {
+                "value": "ONLINE",
+                "validUntil": "0"
+            },
+            "shadowSynchronization": "UNSET"
+        },
+        "manufacturerName": [
+            {
+                "language": "en",
+                "value": "Infinera"
+            }
+        ],
+        "modelNumber": "34X",
+        "interfaces": [
+            "oic.if.r",
+            "oic.if.baseline"
+        ],
+        "protocolIndependentId": "123e4567-e89b-12d3-a456-426614174000",
+        "id": "1c4ea226-71fc-4ec8-6d9d-a3ee2ef9bccf"
+    }
+}
+    
+    {
+    "result": {
+        "id": "2c0da2d6-eb21-4808-59e5-aea4fe2c4f28",
+        "types": [
+            "x.com.infinera.xr",
+            "oic.wk.d"
+        ],
+        "name": "Unsecure",
+        "metadata": {
+            "status": {
+                "value": "ONLINE",
+                "validUntil": "0"
+            },
+            "shadowSynchronization": "UNSET"
+        },
+        "manufacturerName": [
+            {
+                "language": "en",
+                "value": "Infinera"
+            }
+        ],
+        "modelNumber": "34X",
+        "interfaces": [
+            "oic.if.r",
+            "oic.if.baseline"
+        ],
+        "protocolIndependentId": "123e4567-e89b-12d3-a456-426614174000"
+    }
+}
