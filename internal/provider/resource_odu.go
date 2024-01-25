@@ -47,6 +47,7 @@ type ODUResourceData struct {
 	OtuId    types.String `tfsdk:"otuid"`
 	OduId    types.String `tfsdk:"oduid"`
 	OduType  types.String `tfsdk:"odutype"`
+	ConfigState    types.String `tfsdk:"configstate"`
 }
 
 // Schema defines the schema for the resource.
@@ -83,6 +84,10 @@ func (r *ODUResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			},
 			"odutype": schema.StringAttribute{
 				Description: "odu type",
+				Computed:    true,
+			},
+			"configstate": schema.StringAttribute{
+				Description: "configstate",
 				Computed:    true,
 			},
 		},
@@ -185,9 +190,9 @@ func (r *ODUResource) update(plan *ODUResourceData, ctx context.Context, diags *
 
 }
 
-func (r *ODUResource) read(plan *ODUResourceData, ctx context.Context, diags *diag.Diagnostics) {
+func (r *ODUResource) read(state *ODUResourceData, ctx context.Context, diags *diag.Diagnostics) {
 
-	if plan.OtuId.IsNull() || plan.OduId.IsNull() {
+	if state.OtuId.IsNull() || state.OduId.IsNull() {
 		diags.AddError(
 			"ODUResource: read ##: Error Read ODU",
 			"Read: Could not Read ODU, OTU ID and ODU ID are not specified",
@@ -195,14 +200,14 @@ func (r *ODUResource) read(plan *ODUResourceData, ctx context.Context, diags *di
 		return
 	}
 
-	href := after(plan.Id.ValueString(), "/")
+	href := after(state.Id.ValueString(), "/")
 	if len(href) == 0 {
-		href = "/otus/" + plan.OtuId.ValueString() + "/odus/" + plan.OduId.ValueString()
+		href = "/otus/" + state.OtuId.ValueString() + "/odus/" + state.OduId.ValueString()
 	}
 
-	tflog.Debug(ctx, "ODUResource: read ## ", map[string]interface{}{"device": plan.N.ValueString(), "URL": "resources" + href})
+	tflog.Debug(ctx, "ODUResource: read ## ", map[string]interface{}{"device": state.N.ValueString(), "URL": "resources" + href})
 
-	body, deviceId, err := r.client.ExecuteDeviceHttpCommand(plan.N.ValueString(), "GET", "resources"+href, nil)
+	body, deviceId, err := r.client.ExecuteDeviceHttpCommand(state.N.ValueString(), "GET", "resources"+href, nil)
 
 	if err != nil {
 		/*if !strings.Contains(err.Error(), "status: 404") {
@@ -212,7 +217,7 @@ func (r *ODUResource) read(plan *ODUResourceData, ctx context.Context, diags *di
 			)
 			return
 		}
-		plan.Id = types.StringValue("")
+		state.Id = types.StringValue("")
 		tflog.Debug(ctx, "ODUResource: read - not found ## 404", map[string]interface{}{"href": href})
 		return*/
 		diags.AddError(
@@ -224,8 +229,8 @@ func (r *ODUResource) read(plan *ODUResourceData, ctx context.Context, diags *di
 
 	tflog.Debug(ctx, "ODUResource: read ## ", map[string]interface{}{"response": string(body)})
 
-	plan.DeviceId = types.StringValue(deviceId)
-	content, err := SetResourceId(plan.N.ValueString(), &plan.Id, body)
+	state.DeviceId = types.StringValue(deviceId)
+	content, err := SetResourceId(state.N.ValueString(), &state.Id, body)
 	if err != nil {
 		diags.AddError(
 			"ODUResource: read ##: Error Read ODU",
@@ -235,11 +240,15 @@ func (r *ODUResource) read(plan *ODUResourceData, ctx context.Context, diags *di
 	}
 
 	if content["aid"] != nil {
-		plan.Aid = types.StringValue(content["aid"].(string))
+		state.Aid = types.StringValue(content["aid"].(string))
 	}
 	if content["oduType"] != nil {
-		plan.OduType = types.StringValue(content["oduType"].(string))
+		state.OduType = types.StringValue(content["oduType"].(string))
+	}
+	if content["configState"] != nil {
+		state.ConfigState = types.StringValue(content["configState"].(string))
 	}
 
-	tflog.Debug(ctx, "ODUResource: read ## ", map[string]interface{}{"plan": plan})
+
+	tflog.Debug(ctx, "ODUResource: read ## ", map[string]interface{}{"state": state})
 }

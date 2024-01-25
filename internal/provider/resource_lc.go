@@ -52,6 +52,7 @@ type LCResourceData struct {
 	DscgAid        types.String `tfsdk:"dscgaid"`
 	RemoteModuleId types.String `tfsdk:"remotemoduleid"`
 	RemoteClientId types.String `tfsdk:"remoteclientid"`
+	ConfigState    types.String `tfsdk:"configstate"`
 }
 
 // Schema defines the schema for the resource.
@@ -108,6 +109,10 @@ func (r *LCResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *r
 			},
 			"remoteclientid": schema.StringAttribute{
 				Description: "remote client id",
+				Computed:    true,
+			},
+			"configstate": schema.StringAttribute{
+				Description: "configState",
 				Computed:    true,
 			},
 		},
@@ -215,7 +220,7 @@ func (r *LCResource) create(plan *LCResourceData, ctx context.Context, diags *di
 	if plan.ClientAid.IsNull() || plan.DscgAid.IsNull() || plan.LinePTPId.IsNull() {
 		diags.AddError(
 			"LCResource: create ##: Error Create LC",
-			"Create: ClientAid, DscgAid, LinePTPId and CarrierId must specify to create LC:",
+			"Create: ClientAid, DscgAid, and LinePTP Id must specify to create LC:",
 		)
 		return
 	}
@@ -399,7 +404,12 @@ func (r *LCResource) read(plan *LCResourceData, ctx context.Context, diags *diag
 			if len(v.(string)) > 0 {
 				plan.RemoteModuleId = types.StringValue(v.(string))
 			}
+		case "configState":
+			if len(v.(string)) > 0 {
+				plan.ConfigState = types.StringValue(v.(string))
+			}
 		}
+		
 	}
 	tflog.Debug(ctx, "LCResource: read ## ", map[string]interface{}{"plan": plan})
 }

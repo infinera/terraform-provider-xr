@@ -46,7 +46,7 @@ type ACDiagResourceData struct {
 
 // Metadata returns the data source type name.
 func (r *ACDiagResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_ac"
+	resp.TypeName = req.ProviderTypeName + "_ac_diag"
 }
 
 // Schema defines the schema for the data source.

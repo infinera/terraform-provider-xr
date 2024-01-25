@@ -46,6 +46,7 @@ type DSCResourceData struct {
 	TxStatus    types.String `tfsdk:"txstatus"`
 	RxStatus    types.String `tfsdk:"rxstatus"`
 	RelativeDPO types.Int64  `tfsdk:"relativedpo"`
+	ConfigState    types.String `tfsdk:"configstate"`
 }
 
 // Metadata returns the data source type name.
@@ -112,6 +113,10 @@ func (r *DSCResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"relativedpo": schema.Int64Attribute{
 				Description: "Relative DPO",
 				Optional:    true,
+			},
+			"configstate": schema.StringAttribute{
+				Description: "configstate",
+				Computed:    true,
 			},
 		},
 	}
@@ -211,9 +216,6 @@ func (r *DSCResource) update(plan *DSCResourceData, ctx context.Context, diags *
 	tflog.Debug(ctx, "DSCResource: update ## ", map[string]interface{}{"LinePTPId": plan.LinePTPId.ValueString(), "Carrier": plan.CarrierId.ValueString(), "DSCID": plan.DscId.ValueString()})
 
 	var cmd = make(map[string]interface{})
-	if !(plan.CDsc.IsNull()) {
-		cmd["cDsc"] = plan.CDsc.ValueInt64()
-	}
 
 	if !(plan.RelativeDPO.IsNull()) {
 		cmd["relativeDPO"] = plan.RelativeDPO.ValueInt64()
@@ -263,19 +265,23 @@ func (r *DSCResource) update(plan *DSCResourceData, ctx context.Context, diags *
 		return
 	}
 
+	if content["cDsc"] != nil {
+		plan.CDsc = types.Int64Value(int64(content["cDsc"].(float64)))
+	}
+
 	if content["txStatus"] != nil {
 		plan.TxStatus = types.StringValue(content["txStatus"].(string))
 	}
+
 	if content["rxStatus"] != nil {
 		plan.RxStatus = types.StringValue(content["rxStatus"].(string))
+	}
+	if content["configState"] != nil {
+		plan.ConfigState = types.StringValue(content["configState"].(string))
 	}
 
 	if content["aid"] != nil {
 		plan.Aid = types.StringValue(content["aid"].(string))
-	}
-
-	if !(plan.CDsc.IsNull()) {
-		plan.CDsc = types.Int64Value(int64(content["cDsc"].(float64)))
 	}
 
 	tflog.Debug(ctx, "DSCResource: update ## ", map[string]interface{}{"plan": plan})
@@ -340,6 +346,10 @@ func (r DSCResource) read(state *DSCResourceData, ctx context.Context, diags *di
 	}
 	if content["rxStatus"] != nil {
 		state.RxStatus = types.StringValue(content["rxStatus"].(string))
+	}
+
+	if content["configState"] != nil {
+		state.ConfigState = types.StringValue(content["configState"].(string))
 	}
 
 	tflog.Debug(ctx, "DSCResource: read ## ", map[string]interface{}{"state": state})

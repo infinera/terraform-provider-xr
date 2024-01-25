@@ -115,6 +115,14 @@ func (d *ACsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, re
 										Description: "emc outer vid",
 										Computed:    true,
 									},
+									"maxpktlen": schema.Int64Attribute{
+										Description: "maxpktlen",
+										Computed:    true,
+									},
+									"configstate": schema.StringAttribute{
+										Description: "configstate",
+										Computed:    true,
+									},
 								},
 							},
 						},
@@ -198,6 +206,8 @@ func (d *ACsDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 			acData.ImcOuterVID = types.StringValue(acDataRec["imcOuterVID"].(string))
 			acData.Emc = types.StringValue(acDataRec["emc"].(string))
 			acData.EmcOuterVID = types.StringValue(acDataRec["emcOuterVID"].(string))
+			acData.MaxPktLen = types.Int64Value(int64(acDataRec["maxPktLen"].(float64)))
+			acData.ConfigState = types.StringValue(acDataRec["configState"].(string))
 			acs = append(acs, acData)
 		}
 		tflog.Debug(ctx, "ACsDataSource: get carriers", map[string]interface{}{"device Name": queryData.N.ValueString(), "ethernetId": queryData.EthernetId.ValueString(), "ACIDs": queryData.ACIds, "module ACs": acs})

@@ -49,6 +49,9 @@ type EthernetDiagResourceData struct {
 	TermLBDuration types.Int64  `tfsdk:"termlbduration"`
 	FacLB          types.String `tfsdk:"faclb"`
 	FacLBDuration  types.Int64  `tfsdk:"faclbduration"`
+	FacPRBSGen     types.Bool `tfsdk:"facprbsgen"`
+	FacPRBSMon     types.Bool `tfsdk:"facprbsmon"`
+	TermPRBSGen    types.Bool `tfsdk:"termprbsgen"`
 }
 
 // Schema defines the schema for the EthernetDiag resource.
@@ -93,6 +96,18 @@ func (r *EthernetDiagResource) Schema(_ context.Context, _ resource.SchemaReques
 			},
 			"faclbduration": schema.Int64Attribute{
 				Description: "term Loopback Duration",
+				Optional:    true,
+			},
+			"facprbsgen": schema.BoolAttribute{
+				Description: "facprbsgen",
+				Optional:    true,
+			},
+			"facprbsmon": schema.BoolAttribute{
+				Description: "facprbsmon",
+				Optional:    true,
+			},
+			"termprbsgen": schema.BoolAttribute{
+				Description: "termprbsgen",
 				Optional:    true,
 			},
 		},
@@ -217,6 +232,18 @@ func (r *EthernetDiagResource) update(plan *EthernetDiagResourceData, ctx contex
 		cmd["facLBDuration"] = plan.FacLBDuration.ValueInt64()
 	}
 
+	if !(plan.FacPRBSGen.IsNull()) {
+		cmd["facPRBSGen"] = plan.FacPRBSGen.ValueBool()
+	}
+
+	if !(plan.FacPRBSMon.IsNull()) {
+		cmd["facPRBSMon"] = plan.FacPRBSMon.ValueBool()
+	}
+
+	if !(plan.TermPRBSGen.IsNull()) {
+		cmd["termPRBSGen"] = plan.TermPRBSGen.ValueBool()
+	}
+
 	if len(cmd) == 0. {
 		tflog.Debug(ctx, "EthernetDiagResource: update ## No Settings, Nothing to Run Diagnostic", map[string]interface{}{"Device": plan.N.ValueString(), "URL": "resources/ethernets/" + plan.EthernetId.ValueString() + "/diagnostic"})
 		return
@@ -333,6 +360,18 @@ func (r EthernetDiagResource) read(state *EthernetDiagResourceData, ctx context.
 
 	if !state.FacLBDuration.IsNull() && content["facLBDuration"] != nil {
 		state.FacLBDuration = types.Int64Value(int64(content["facLBDuration"].(float64)))
+	}
+
+	if !state.FacPRBSGen.IsNull() && content["facPRBSGen"] != nil {
+		state.FacPRBSGen = types.BoolValue(content["facPRBSGen"].(bool))
+	}
+
+	if !state.FacPRBSMon.IsNull() && content["facPRBSMon"] != nil {
+		state.FacPRBSMon = types.BoolValue(content["facPRBSMon"].(bool))
+	}
+
+	if !state.TermPRBSGen.IsNull() && content["termPRBSGen"] != nil {
+		state.TermPRBSGen = types.BoolValue(content["termPRBSGen"].(bool))
 	}
 
 	tflog.Debug(ctx, "EthernetDiagResource: read ## ", map[string]interface{}{"state": state})

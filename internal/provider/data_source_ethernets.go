@@ -98,6 +98,14 @@ func (d *EthernetsDataSource) Schema(_ context.Context, _ datasource.SchemaReque
 										Description: "fec mode",
 										Computed:    true,
 									},
+									"maxpktlen": schema.Int64Attribute{
+										Description: "maxpktlen",
+										Computed:    true,
+									},
+									"configstate": schema.StringAttribute{
+										Description: "configstate",
+										Computed:    true,
+									},
 								},
 							},
 						},
@@ -183,6 +191,8 @@ func (d *EthernetsDataSource) Read(ctx context.Context, req datasource.ReadReque
 			ethernetData.FecType = types.StringValue(ethernet["fecType"].(string))
 			ethernetData.FecMode = types.StringValue(ethernet["fecMode"].(string))
 			ethernetData.PortSpeed = types.Int64Value(int64(ethernet["portSpeed"].(float64)))
+			ethernetData.MaxPktLen = types.Int64Value(int64(ethernet["maxPktLen"].(float64)))
+			ethernetData.ConfigState = types.StringValue(ethernet["configState"].(string))
 			ethernets = append(ethernets, ethernetData)
 		}
 		tflog.Debug(ctx, "ethernetsDataSource: get ethernets", map[string]interface{}{"ethernets": ethernets})

@@ -102,6 +102,10 @@ func (d *LCsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, re
 							Description: "remote client id",
 							Computed:    true,
 						},
+						"configstate": schema.StringAttribute{
+							Description: "configState",
+							Computed:    true,
+						},
 					},
 				},
 			},
@@ -168,6 +172,7 @@ func (d *LCsDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		lcData.DscgAid = types.StringValue(lcDataRec["dscgAid"].(string))
 		lcData.RemoteModuleId = types.StringValue(lcDataRec["remoteModuleId"].(string))
 		lcData.RemoteClientId = types.StringValue(lcDataRec["remoteClientId"].(string))
+		lcData.ConfigState = types.StringValue(lcDataRec["configState"].(string))
 		lcs = append(lcs, lcData)
 
 	}

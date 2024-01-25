@@ -120,6 +120,10 @@ func (d *DSCsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, r
 										Description: "Relative DPO",
 										Computed:    true,
 									},
+									"configstate": schema.StringAttribute{
+										Description: "configstate",
+										Computed:    true,
+									},
 								},
 							},
 						},
@@ -208,6 +212,7 @@ func (d *DSCsDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 			dscData.RxStatus = types.StringValue(dsc["rxStatus"].(string))
 			dscData.RelativeDPO = types.Int64Value(int64(dsc["relativeDPO"].(float64)))
 			dscData.CDsc = types.Int64Value(int64(dsc["cDsc"].(float64)))
+			dscData.ConfigState = types.StringValue(dsc["configState"].(string))
 			dscs = append(dscs, dscData)
 		}
 		tflog.Debug(ctx, "dscsDataSource: get dscs", map[string]interface{}{"dscs": dscs})

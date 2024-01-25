@@ -47,6 +47,8 @@ type ACResourceData struct {
 	Emc         types.String `tfsdk:"emc"`
 	EmcOuterVID types.String `tfsdk:"emc_outer_vid"`
 	AcCtrl      types.Int64  `tfsdk:"acctrl"`
+	MaxPktLen  types.Int64  `tfsdk:"maxpktlen"`
+	ConfigState    types.String `tfsdk:"configstate"`
 }
 
 // Metadata returns the data source type name.
@@ -109,6 +111,14 @@ func (r *ACResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *r
 			"emc_outer_vid": schema.StringAttribute{
 				Description: "emc_outer_vid",
 				Optional:    true,
+			},
+			"maxpktlen": schema.Int64Attribute{
+				Description: "maxpktlen",
+				Optional:    true,
+			},
+			"configstate": schema.StringAttribute{
+				Description: "configstate",
+				Computed:    true,
 			},
 		},
 	}
@@ -239,6 +249,10 @@ func (r *ACResource) create(plan *ACResourceData, ctx context.Context, diags *di
 
 	if !(plan.EmcOuterVID.IsNull()) {
 		rep["emcOuterVID"] = plan.EmcOuterVID.ValueString()
+	}
+
+	if !(plan.MaxPktLen.IsNull()) {
+		rep["maxPktLen"] = plan.MaxPktLen.ValueInt64()
 	}
 
 	var cmd = make(map[string]interface{})
@@ -379,6 +393,14 @@ func (r *ACResource) read(plan *ACResourceData, ctx context.Context, diags *diag
 			if !(plan.EmcOuterVID.IsNull()) {
 				plan.EmcOuterVID = types.StringValue(v.(string))
 			}
+		case "maxPktLen":
+			if !(plan.MaxPktLen.IsNull()) {
+				plan.MaxPktLen = types.Int64Value(int64(v.(float64)))
+			}
+		case "configState":
+			if len(v.(string)) > 0 {
+				plan.ConfigState = types.StringValue(v.(string))
+			}
 		}
 	}
 	tflog.Debug(ctx, "ACResource: read ## ", map[string]interface{}{"plan": plan})
@@ -394,7 +416,7 @@ func (r *ACResource) update(plan *ACResourceData, ctx context.Context, diags *di
 		return
 	}
 
-	tflog.Debug(ctx, "ACResource: create ## ", map[string]interface{}{"Acid": plan.AcId.ValueString(), "EthernetId": plan.EthernetId.ValueString()})
+	tflog.Debug(ctx, "ACResource: update ## ", map[string]interface{}{"Acid": plan.AcId.ValueString(), "EthernetId": plan.EthernetId.ValueString()})
 
 	var cmd = make(map[string]interface{})
 
@@ -416,6 +438,10 @@ func (r *ACResource) update(plan *ACResourceData, ctx context.Context, diags *di
 
 	if !(plan.EmcOuterVID.IsNull()) {
 		cmd["emcOuterVID"] = plan.EmcOuterVID.ValueString()
+	}
+
+	if !(plan.MaxPktLen.IsNull()) {
+		cmd["maxPktLen"] = plan.MaxPktLen.ValueInt64()
 	}
 
 	if len(cmd) == 0. {

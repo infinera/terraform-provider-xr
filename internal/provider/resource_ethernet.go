@@ -48,6 +48,8 @@ type EthernetResourceData struct {
 	FecMode    types.String `tfsdk:"fecmode"`
 	FecType    types.String `tfsdk:"fectype"`
 	PortSpeed  types.Int64  `tfsdk:"portspeed"`
+	MaxPktLen  types.Int64  `tfsdk:"maxpktlen"`
+	ConfigState    types.String `tfsdk:"configstate"`
 }
 
 // Schema defines the schema for the  resource.
@@ -88,7 +90,15 @@ func (r *EthernetResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 			},
 			"portspeed": schema.Int64Attribute{
 				Description: "fec mode",
+				Computed:    true,
+			},
+			"maxpktlen": schema.Int64Attribute{
+				Description: "maxpktlen",
 				Optional:    true,
+			},
+			"configstate": schema.StringAttribute{
+				Description: "configstate",
+				Computed:    true,
 			},
 		},
 	}
@@ -202,6 +212,9 @@ func (r *EthernetResource) update(plan *EthernetResourceData, ctx context.Contex
 	if !(plan.FecMode.IsNull()) {
 		cmd["fecMode"] = plan.FecMode.ValueString()
 	}
+	if !(plan.MaxPktLen.IsNull()) {
+		cmd["maxPktLen"] = plan.MaxPktLen.ValueInt64()
+	}
 
 	if len(cmd) == 0. {
 		tflog.Debug(ctx, "EthernetResource: update ## No Settings, Nothing to configure", map[string]interface{}{"Device": plan.N.ValueString(), "URL": "resources/ethernets/" + plan.EthernetId.ValueString()})
@@ -247,14 +260,11 @@ func (r *EthernetResource) update(plan *EthernetResourceData, ctx context.Contex
 		return
 	}
 
-	if content["aid"] != nil {
-		plan.Aid = types.StringValue(content["aid"].(string))
-	}
 	if content["fecType"] != nil {
 		plan.FecType = types.StringValue(content["fecType"].(string))
 	}
-	if content["portSpeed"] != nil {
-		plan.PortSpeed = types.Int64Value(int64(content["portSpeed"].(float64)))
+	if content["maxPktLen"] != nil {
+		plan.MaxPktLen = types.Int64Value(int64(content["maxPktLen"].(float64)))
 	}
 	tflog.Debug(ctx, "EthernetResource: update ## ", map[string]interface{}{"plan": plan})
 
@@ -322,6 +332,14 @@ func (r *EthernetResource) read(plan *EthernetResourceData, ctx context.Context,
 			}
 		case "portSpeed":
 			plan.PortSpeed = types.Int64Value(int64(v.(float64)))
+		case "maxPktLen":
+			if !(plan.MaxPktLen.IsNull()) {
+				plan.MaxPktLen = types.Int64Value(int64(v.(float64)))
+			}
+		case "configState":
+			if len(v.(string)) > 0 {
+				plan.ConfigState = types.StringValue(v.(string))
+			}
 		}
 
 	}

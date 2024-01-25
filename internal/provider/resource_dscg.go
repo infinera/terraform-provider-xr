@@ -46,6 +46,7 @@ type DSCGResourceData struct {
 	RxCDSCs   types.List   `tfsdk:"rxcdscs"`
 	IdleCDSCs types.List   `tfsdk:"idlecdscs"`
 	DscgCtrl  types.Int64  `tfsdk:"dscgctrl"`
+	ConfigState    types.String `tfsdk:"configstate"`
 }
 
 // Metadata returns the data source type name.
@@ -101,6 +102,10 @@ func (r *DSCGResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 			"dscgctrl": schema.Int64Attribute{
 				Description: "dscg ctrl",
 				Optional:    true,
+			},
+			"configstate": schema.StringAttribute{
+				Description: "configState",
+				Computed:    true,
 			},
 		},
 	}
@@ -390,6 +395,10 @@ func (r DSCGResource) read(state *DSCGResourceData, ctx context.Context, diags *
 			if !(state.DscgCtrl.IsNull()) {
 				state.DscgCtrl = types.Int64Value(int64(v.(float64)))
 				}
+		case "configState":
+			if v != nil {
+				state.ConfigState = types.StringValue(v.(string))
+			}
 		}
 	}
 	tflog.Debug(ctx, "DSCGResource: read ## ", map[string]interface{}{"plan": state})
@@ -457,6 +466,18 @@ func (r *DSCGResource) update(plan *DSCGResourceData, ctx context.Context, diags
 	txCDSCs := setBits(txCDSCList)
 	cmd["txCDSCs"] = txCDSCs
 
+	var idleCDSCList []int
+	diag = plan.IdleCDSCs.ElementsAs(ctx, &idleCDSCList, true)
+	if diag != nil && diag.HasError() {
+		diags.AddError(
+			"DSCGResource: create ##: Error Create DSCG",
+			"Create: Could not Create DSCG, IdleCDSCs is invalid"+plan.TxCDSCs.String(),
+		)
+		return
+	}
+	idleCDSCs := setBits(idleCDSCList)
+	cmd["idleCDSCs"] = idleCDSCs
+
 	if !(plan.DscgCtrl.IsNull()) {
 		cmd["dscgCtrl"] = plan.DscgCtrl.ValueInt64()
 	}
@@ -505,16 +526,15 @@ func (r *DSCGResource) update(plan *DSCGResourceData, ctx context.Context, diags
 		return
 	}
 
+	plan.Aid = types.StringNull()
 	aid := content["aid"]
 	if aid != nil && len(aid.(string)) > 0 {
 		plan.Aid = types.StringValue(aid.(string))
-	} else {
-		plan.Aid = types.StringValue("")
 	}
 
-	if content["idleCDSCs"] != nil {
-		idleCDSCList := getBits(int(content["idleCDSCs"].(float64)))
-		plan.IdleCDSCs, _ = types.ListValue(types.Int64Type, idleCDSCList)
+	plan.ConfigState = types.StringNull()
+	if content["configState"] != nil {
+		plan.ConfigState = types.StringValue(content["configState"].(string))
 	}
 
 	tflog.Debug(ctx, "DSCResource: update ## ", map[string]interface{}{"plan": plan})

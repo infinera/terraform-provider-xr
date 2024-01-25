@@ -1,7 +1,7 @@
 TEST?=$$(go list ./... | grep -v 'vendor')
 HOSTNAME=infinera.com
-NAMESPACE=poc
-NAME=xrcm
+NAMESPACE=infinera
+NAME=xr
 BINARY=terraform-provider-${NAME}
 VERSION=0.0.1
 OS_ARCH=linux_amd64

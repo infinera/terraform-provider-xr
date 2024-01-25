@@ -51,6 +51,7 @@ type OTUResourceData struct {
 	RxTTI       types.String `tfsdk:"rxtti"`
 	TxTTI       types.String `tfsdk:"txtti"`
 	ExpectedTTI types.String `tfsdk:"expectedtti"`
+	ConfigState    types.String `tfsdk:"configstate"`
 }
 
 // Schema defines the schema for the resource.
@@ -100,6 +101,10 @@ func (r *OTUResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"expectedtti": schema.StringAttribute{
 				Description: "expected tti",
 				Optional:    true,
+			},
+			"configstate": schema.StringAttribute{
+				Description: "configstate",
+				Computed:    true,
 			},
 		},
 	}
@@ -208,10 +213,6 @@ func (r *OTUResource) update(plan *OTUResourceData, ctx context.Context, diags *
 		cmd["txTTI"] = plan.TxTTI.ValueString()
 	}
 
-	if !(plan.Rate.IsNull()) {
-		cmd["rate"] = plan.Rate.ValueInt64()
-	}
-
 	if !(plan.ExpectedTTI.IsNull()) {
 		cmd["expectedTTI"] = plan.ExpectedTTI.ValueString()
 	}
@@ -278,12 +279,16 @@ func (r *OTUResource) update(plan *OTUResourceData, ctx context.Context, diags *
 		plan.RxTTI = types.StringValue(content["rxTTI"].(string))
 	}
 
+	if content["configState"] != nil {
+		plan.ConfigState = types.StringValue(content["configState"].(string))
+	}
+
 	tflog.Debug(ctx, "OTUResource: update ## ", map[string]interface{}{"plan": plan})
 }
 
-func (r *OTUResource) read(plan *OTUResourceData, ctx context.Context, diags *diag.Diagnostics) {
+func (r *OTUResource) read(state *OTUResourceData, ctx context.Context, diags *diag.Diagnostics) {
 
-	if plan.OtuId.IsNull() {
+	if state.OtuId.IsNull() {
 		diags.AddError(
 			"OTUResource: read ##: Error Read OTU",
 			"Read: Could not Create OTU, ID  are not specified ",
@@ -291,14 +296,14 @@ func (r *OTUResource) read(plan *OTUResourceData, ctx context.Context, diags *di
 		return
 	}
 
-	href := after(plan.Id.ValueString(), "/")
+	href := after(state.Id.ValueString(), "/")
 	if len(href) == 0 {
-		href = "/otus/ " + plan.OtuId.ValueString()
+		href = "/otus/ " + state.OtuId.ValueString()
 	}
 
-	tflog.Debug(ctx, "OTUResource: read ## ", map[string]interface{}{"device": plan.N.ValueString(), "URL": href})
+	tflog.Debug(ctx, "OTUResource: read ## ", map[string]interface{}{"device": state.N.ValueString(), "URL": href})
 
-	body, deviceId, err := r.client.ExecuteDeviceHttpCommand(plan.N.ValueString(), "GET", "resources"+href, nil)
+	body, deviceId, err := r.client.ExecuteDeviceHttpCommand(state.N.ValueString(), "GET", "resources"+href, nil)
 
 	if err != nil {
 		/*if !strings.Contains(err.Error(), "status: 404") {
@@ -308,7 +313,7 @@ func (r *OTUResource) read(plan *OTUResourceData, ctx context.Context, diags *di
 			)
 			return
 		}
-		plan.Id = types.StringValue("")
+		state.Id = types.StringValue("")
 		tflog.Debug(ctx, "OTUResource: read - not found ## 404", map[string]interface{}{"href": href})
 		return*/
 		diags.AddError(
@@ -320,9 +325,9 @@ func (r *OTUResource) read(plan *OTUResourceData, ctx context.Context, diags *di
 
 	tflog.Debug(ctx, "OTUResource: read ## ", map[string]interface{}{"response": string(body)})
 
-	plan.DeviceId = types.StringValue(deviceId)
+	state.DeviceId = types.StringValue(deviceId)
 
-	content, err := SetResourceId(plan.N.ValueString(), &plan.Id, body)
+	content, err := SetResourceId(state.N.ValueString(), &state.Id, body)
 
 	if err != nil {
 		diags.AddError(
@@ -336,29 +341,34 @@ func (r *OTUResource) read(plan *OTUResourceData, ctx context.Context, diags *di
 		switch k {
 		case "aid":
 			if len(v.(string)) > 0 {
-				plan.Aid = types.StringValue(v.(string))
+				state.Aid = types.StringValue(v.(string))
 			}
 		case "otutype":
 			if len(v.(string)) > 0 {
-				plan.Otutype = types.StringValue(v.(string))
+				state.Otutype = types.StringValue(v.(string))
 			}
 		case "rxTTI":
-			if !(plan.RxTTI.IsNull()) {
-				plan.RxTTI = types.StringValue(v.(string))
+			if !(state.RxTTI.IsNull()) {
+				state.RxTTI = types.StringValue(v.(string))
 			}
 		case "txTTI":
-			if !(plan.TxTTI.IsNull()) {
-				plan.TxTTI = types.StringValue(v.(string))
+			if !(state.TxTTI.IsNull()) {
+				state.TxTTI = types.StringValue(v.(string))
 			}
 		case "expectedTTI":
-			if !(plan.ExpectedTTI.IsNull()) {
-				plan.ExpectedTTI = types.StringValue(v.(string))
+			if !(state.ExpectedTTI.IsNull()) {
+				state.ExpectedTTI = types.StringValue(v.(string))
 			}
 		case "rate":
-			if !(plan.Rate.IsNull()) {
-				plan.Rate = types.Int64Value(v.(int64))
+			if !(state.Rate.IsNull()) {
+				state.Rate = types.Int64Value(v.(int64))
+			}
+		case "configState":
+			if len(v.(string)) > 0 {
+				state.ConfigState = types.StringValue(v.(string))
 			}
 		}
+		
 	}
-	tflog.Debug(ctx, "OTUResource: read ## ", map[string]interface{}{"plan": plan})
+	tflog.Debug(ctx, "OTUResource: read ## ", map[string]interface{}{"state": state})
 }

@@ -52,6 +52,7 @@ type EthernetLLDPResourceData struct {
 	ClrStats         types.Bool   `tfsdk:"clrstats"`
 	FlushHostDb      types.Bool   `tfsdk:"flushhostdb"`
 	TooManyNeighbors types.Bool   `tfsdk:"toomanyneighbors"`
+	ConfigState    types.String   `tfsdk:"configstate"`
 }
 
 // Schema defines the schema for the  resource.
@@ -108,6 +109,10 @@ func (r *EthernetLLDPResource) Schema(_ context.Context, _ resource.SchemaReques
 			},
 			"toomanyneighbors": schema.BoolAttribute{
 				Description: "too many neighbors",
+				Computed:    true,
+			},
+			"configstate": schema.StringAttribute{
+				Description: "configState",
 				Computed:    true,
 			},
 		},
@@ -283,6 +288,10 @@ func (r *EthernetLLDPResource) read(state *EthernetLLDPResourceData, ctx context
 			if !(state.FlushHostDb.IsNull()) {
 				state.FlushHostDb = types.BoolValue(v.(bool))
 			}
+		case "configState":
+			if len(v.(string)) > 0 {
+				state.ConfigState = types.StringValue(v.(string))
+			}
 		}
 	}
 
@@ -376,6 +385,10 @@ func (r *EthernetLLDPResource) update(plan *EthernetLLDPResourceData, ctx contex
 
 	if content["tooManyNeighbors"] != nil {
 		plan.TooManyNeighbors = types.BoolValue(content["tooManyNeighbors"].(bool))
+	}
+
+	if content["configState"] != nil {
+		plan.ConfigState = types.StringValue(content["configState"].(string))
 	}
 
 	tflog.Debug(ctx, "EthernetLLDPResource: update ## ", map[string]interface{}{"plan": plan})

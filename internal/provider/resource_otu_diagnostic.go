@@ -47,10 +47,10 @@ type OTUDiagResourceData struct {
 	DeviceId   types.String `tfsdk:"deviceid"`
 	Aid        types.String `tfsdk:"aid"`
 	OtuId      types.String `tfsdk:"otuid"`
-	OTUId      types.String `tfsdk:"OTUid"`
 	TermLB     types.String `tfsdk:"termlb"`
-	facPRBSGen types.Bool   `tfsdk:"facprbsgen"`
-	facPRBSMon types.Bool   `tfsdk:"facprbsmon"`
+	TermLBDuration  types.Int64  `tfsdk:"termlbduration"`
+	FacLB      types.String `tfsdk:"faclb"`
+	FacLBDuration  types.Int64  `tfsdk:"faclbduration"`
 }
 
 // Schema defines the schema for the resource.
@@ -89,12 +89,16 @@ func (r *OTUDiagResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Description: "Term Loopback",
 				Optional:    true,
 			},
-			"facprbsGen": schema.BoolAttribute{
-				Description: "fac prbs Gen",
+			"termlbduration": schema.Int64Attribute{
+				Description: "term Loopback Duration",
 				Optional:    true,
 			},
-			"facprbsmon": schema.BoolAttribute{
-				Description: "fac prbs MOn",
+			"faclb": schema.StringAttribute{
+				Description: "loopback type",
+				Optional:    true,
+			},
+			"faclbduration": schema.Int64Attribute{
+				Description: "term Loopback Duration",
 				Optional:    true,
 			},
 		},
@@ -194,16 +198,21 @@ func (r *OTUDiagResource) update(plan *OTUDiagResourceData, ctx context.Context,
 	}
 
 	var cmd = make(map[string]interface{})
-	if !(plan.facPRBSGen.IsNull()) {
-		cmd["facPRBSGen"] = plan.facPRBSGen.ValueBool()
-	}
-
-	if !(plan.facPRBSGen.IsNull()) {
-		cmd["facPRBSMon"] = plan.facPRBSGen.ValueBool()
-	}
 
 	if !(plan.TermLB.IsNull()) {
 		cmd["termLB"] = plan.TermLB.ValueString()
+	}
+
+	if !(plan.TermLBDuration.IsNull()) {
+		cmd["termLBDuration"] = plan.TermLBDuration.ValueInt64()
+	}
+
+	if !(plan.FacLB.IsNull()) {
+		cmd["facLB"] = plan.FacLB.ValueString()
+	}
+
+	if !(plan.FacLBDuration.IsNull()) {
+		cmd["facLBDuration"] = plan.FacLBDuration.ValueInt64()
 	}
 
 	if len(cmd) == 0. {
@@ -253,9 +262,9 @@ func (r *OTUDiagResource) update(plan *OTUDiagResourceData, ctx context.Context,
 
 }
 
-func (r *OTUDiagResource) read(plan *OTUDiagResourceData, ctx context.Context, diags *diag.Diagnostics) {
+func (r *OTUDiagResource) read(state *OTUDiagResourceData, ctx context.Context, diags *diag.Diagnostics) {
 
-	if plan.OtuId.IsNull() {
+	if state.OtuId.IsNull() {
 		diags.AddError(
 			"OTUDiagResource: read ##: Error Read OTUDiag",
 			"Read: Could not Read OTUDiag, OTU ID and OTUDiag ID are not specified",
@@ -263,14 +272,14 @@ func (r *OTUDiagResource) read(plan *OTUDiagResourceData, ctx context.Context, d
 		return
 	}
 
-	href := after(plan.Id.ValueString(), "/")
+	href := after(state.Id.ValueString(), "/")
 	if len(href) == 0 {
-		href = "/otus/" + plan.OtuId.ValueString() + "/diagnostic"
+		href = "/otus/" + state.OtuId.ValueString() + "/diagnostic"
 	}
 
-	tflog.Debug(ctx, "OTUDiagResource: read ## ", map[string]interface{}{"device": plan.N.ValueString(), "URL": "resources" + href})
+	tflog.Debug(ctx, "OTUDiagResource: read ## ", map[string]interface{}{"device": state.N.ValueString(), "URL": "resources" + href})
 
-	body, deviceId, err := r.client.ExecuteDeviceHttpCommand(plan.N.ValueString(), "GET", "resources"+href, nil)
+	body, deviceId, err := r.client.ExecuteDeviceHttpCommand(state.N.ValueString(), "GET", "resources"+href, nil)
 
 	if err != nil {
 		diags.AddError(
@@ -282,8 +291,8 @@ func (r *OTUDiagResource) read(plan *OTUDiagResourceData, ctx context.Context, d
 
 	tflog.Debug(ctx, "OTUDiagResource: read ## ", map[string]interface{}{"response": string(body)})
 
-	plan.DeviceId = types.StringValue(deviceId)
-	content, err := SetResourceId(plan.N.ValueString(), &plan.Id, body)
+	state.DeviceId = types.StringValue(deviceId)
+	content, err := SetResourceId(state.N.ValueString(), &state.Id, body)
 	if err != nil {
 		diags.AddError(
 			"OTUDiagResource: read ##: Error Read OTUDiag",
@@ -293,17 +302,22 @@ func (r *OTUDiagResource) read(plan *OTUDiagResourceData, ctx context.Context, d
 	}
 
 	if content["aid"] != nil {
-		plan.Aid = types.StringValue(content["aid"].(string))
+		state.Aid = types.StringValue(content["aid"].(string))
 	}
 	if content["termLB"] != nil {
-		plan.TermLB = types.StringValue(content["termLB"].(string))
+		state.TermLB = types.StringValue(content["termLB"].(string))
 	}
-	if content["FacPRBSGen"] != nil {
-		plan.facPRBSGen = types.BoolValue(content["facPRBSGen"].(bool))
-	}
-	if content["FacPRBSMon"] != nil {
-		plan.facPRBSMon = types.BoolValue(content["facPRBSMon"].(bool))
+	if !state.TermLBDuration.IsNull() && content["termLBDuration"] != nil {
+		state.TermLBDuration = types.Int64Value(int64(content["termLBDuration"].(float64)))
 	}
 
-	tflog.Debug(ctx, "OTUDiagResource: read ## ", map[string]interface{}{"plan": plan})
+	if !state.FacLB.IsNull() && content["facLB"] != nil {
+		state.FacLB = types.StringValue(content["facLB"].(string))
+	}
+
+	if !state.FacLBDuration.IsNull() && content["facLBDuration"] != nil {
+		state.FacLBDuration = types.Int64Value(int64(content["facLBDuration"].(float64)))
+	}
+
+	tflog.Debug(ctx, "OTUDiagResource: read ## ", map[string]interface{}{"state": state})
 }
